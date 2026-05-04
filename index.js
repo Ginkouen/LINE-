@@ -32,7 +32,7 @@ async function handleEvent(event) {
   }
 
   const userText = event.message.text;
-  const userId = event.source.userId;
+  const targetId = event.source.groupId || event.source.userId;
 
   if (userText === "あ") {
     if (timers.has(userId)) {
