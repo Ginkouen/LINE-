@@ -57,11 +57,11 @@ async function handleEvent(event) {
         messages: [
           {
             type: "text",
-            text: "ここに繰り返したい言葉",
+            text: "うざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょ",
           },
         ],
       });
-    }, 60000); // ←1分ごと（制限対策）
+    }, 5); // ←1分ごと（制限対策）
 
     timers.set(targetId, timer);
 
