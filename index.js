@@ -32,12 +32,18 @@ async function handleEvent(event) {
   }
 
   const userText = event.message.text;
-  const targetId = event.source.groupId || event.source.userId;
 
+  // 個人 or グループ対応
+  const targetId =
+    event.source.groupId ||
+    event.source.roomId ||
+    event.source.userId;
+
+  // 「あ」でON/OFF
   if (userText === "あ") {
-    if (timers.has(userId)) {
-      clearInterval(timers.get(userId));
-      timers.delete(userId);
+    if (timers.has(targetId)) {
+      clearInterval(timers.get(targetId));
+      timers.delete(targetId);
 
       return client.replyMessage({
         replyToken: event.replyToken,
@@ -47,21 +53,21 @@ async function handleEvent(event) {
 
     const timer = setInterval(() => {
       client.pushMessage({
-        to: userId,
+        to: targetId,
         messages: [
           {
             type: "text",
-            text: "うざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょ",
+            text: "ここに繰り返したい言葉",
           },
         ],
       });
-    }, 5);
+    }, 60000); // ←1分ごと（制限対策）
 
-    timers.set(userId, timer);
+    timers.set(targetId, timer);
 
     return client.replyMessage({
       replyToken: event.replyToken,
-      messages: [{ type: "text", text: "うざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょうざいでしょ" }],
+      messages: [{ type: "text", text: "開始したよ" }],
     });
   }
 
@@ -74,5 +80,5 @@ app.get("/", (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log("Server running");
 });
